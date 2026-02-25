@@ -24,7 +24,7 @@ func doGetCertificateCmd() {
 
 	certs, err := ssl_tool.GetCerts(u.String())
 	if errors.Is(err, ssl_tool.ErrInvalidCert) {
-		fmt.Println("! Invalid Certificate")
+		fmt.Println(invalidCertStyle.Render("! Invalid Certificate"))
 	} else if err != nil {
 		logger.Fatalf("unable to get certs: %v", err)
 	}
