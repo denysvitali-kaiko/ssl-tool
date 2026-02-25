@@ -1,24 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
+import "github.com/spf13/cobra"
 
-type CertificateCmd struct {
-	Parse *ParseCmd `arg:"subcommand:parse"`
+var certCmd = &cobra.Command{
+	Use:   "cert",
+	Short: "Certificate operations",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmd.Help()
+	},
 }
 
-func doCertificateCmd(cmd *CertificateCmd) {
-	if cmd == nil {
-		logger.Fatalf("%s", "cmd cannot be nil")
-	}
-
-	if cmd.Parse != nil {
-		doParseCertificate(cmd.Parse)
-		return
-	}
-
-	fmt.Fprintln(os.Stderr, specifySubcommand)
-	os.Exit(1)
+func init() {
+	certCmd.AddCommand(parseCmd)
 }

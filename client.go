@@ -1,19 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
+import "github.com/spf13/cobra"
 
-type ClientCmd struct {
-	GetCertificate *GetCertificateCmd `arg:"subcommand:get-certificate"`
+var clientCmd = &cobra.Command{
+	Use:   "client",
+	Short: "Client operations",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmd.Help()
+	},
 }
 
-func doClientCmd() {
-	if args.Client.GetCertificate != nil {
-		doGetCertificateCmd()
-	} else {
-		fmt.Fprintln(os.Stderr, specifySubcommand)
-		os.Exit(1)
-	}
+func init() {
+	clientCmd.AddCommand(getCertificateCmd)
 }

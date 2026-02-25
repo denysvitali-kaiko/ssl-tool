@@ -3,25 +3,28 @@ package main
 import (
 	"crypto/x509"
 	"encoding/pem"
-	"github.com/alexeyco/simpletable"
 	"os"
+
+	"github.com/alexeyco/simpletable"
+	"github.com/spf13/cobra"
 )
 
-type ParseCmd struct {
-	CertFile string `arg:"positional" description:"A certificate in .pem format"`
+var parseCmd = &cobra.Command{
+	Use:   "parse [certfile]",
+	Short: "Parse and display a PEM certificate file",
+	Args:  cobra.MaximumNArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			logger.Errorf("please specify a certificate file")
+			return nil
+		}
+		doParseCertificate(args[0])
+		return nil
+	},
 }
 
-func doParseCertificate(cmd *ParseCmd) {
-	if cmd == nil {
-		logger.Fatalf("cmd cannot be nil")
-	}
-
-	if cmd.CertFile == "" {
-		logger.Errorf("please specify a certificate file")
-		return
-	}
-
-	fileBytes, err := os.ReadFile(cmd.CertFile)
+func doParseCertificate(certFile string) {
+	fileBytes, err := os.ReadFile(certFile)
 	if err != nil {
 		logger.Errorf("unable to read certificate file: %v", err)
 		return
